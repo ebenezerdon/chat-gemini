@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Interface</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: black;
+        color: white;
+      }
+      .chat-box {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .user-input {
+        margin-bottom: 15px;
+      }
+      .response {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-box">
+      <form id="chat-form">
+        <div class="user-input">
+          <label for="prompt"><strong>Your Message:</strong></label
+          ><br />
+          <input
+            type="text"
+            id="prompt"
+            name="prompt"
+            required
+            style="width: 100%"
+          />
+        </div>
+        <button type="submit">Send</button>
+      </form>
+      <div class="response" id="response"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById('chat-form')
+        .addEventListener('submit', async function (event) {
+          event.preventDefault();
+          const prompt = document.getElementById('prompt').value;
+          const responseDiv = document.getElementById('response');
+
+          responseDiv.textContent = 'Processing...';
+
+          const response = await fetch('/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: prompt }),
+          });
+
+          const data = await response.json();
+
+          if (data.ok) {
+            responseDiv.innerHTML =
+              '<strong>Response:</strong> ' + data.completion;
+          } else {
+            responseDiv.innerHTML = '<strong>Error:</strong> ' + data.error;
+          }
+        });
+    </script>
+  </body>
+</html>
