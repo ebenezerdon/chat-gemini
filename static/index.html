@@ -145,7 +145,7 @@
             const data = await response.json()
 
             if (data.ok) {
-              botMessage.textContent = data.completion
+              botMessage.innerHTML = data.output
             } else {
               botMessage.textContent = 'Error: ' + data.error
             }

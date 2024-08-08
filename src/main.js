@@ -28,7 +28,9 @@ export default async ({ req, res, log, error }) => {
   /* Handle POST request */
   if (req.method === 'POST') {
     const body = req.body
-    const prompt = body.prompt || 'Say something nice'
+    const prompt =
+      body.prompt +
+      '. Your output should be HTML. Do not include any heading or body tags. Just the content.'
 
     const url =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' +
@@ -61,7 +63,7 @@ export default async ({ req, res, log, error }) => {
 
       const result = {
         ok: true,
-        completion: generatedText,
+        output: generatedText,
         finishReason: data.candidates?.[0]?.finishReason || 'Unknown',
         index: data.candidates?.[0]?.index || 0,
         safetyRatings: data.candidates?.[0]?.safetyRatings || [],
