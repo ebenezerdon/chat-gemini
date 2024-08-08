@@ -17,7 +17,7 @@ function getStaticFile(fileName) {
 }
 
 export default async ({ req, res, log, error }) => {
-  const GEMINI_API_KEY = constants.GEMINI_API_KEY
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 
   /* Handle GET request */
   if (req.method === 'GET') {
