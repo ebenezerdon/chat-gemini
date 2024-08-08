@@ -3,7 +3,6 @@ import fetch from 'node-fetch'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import fs from 'fs'
-import constants from './constants.js'
 
 /* Use this in place of __dirname in an ES module */
 const __filename = fileURLToPath(import.meta.url)
@@ -55,7 +54,6 @@ export default async ({ req, res, log, error }) => {
       })
 
       const data = await response.json()
-      log('Response from Gemini API:', data)
 
       const generatedText =
         data.candidates?.[0]?.content?.parts?.[0]?.text ||
