@@ -30,7 +30,8 @@ export default async ({ req, res, log, error }) => {
     const body = req.body
     const prompt =
       body.prompt +
-      '. Your output should be HTML. Do not include any heading or body tags. Just the content.'
+      `. Your output should be HTML. Do not include any heading or body tags. Just the content.
+      Respond to greetings with a polite greeting.`
 
     const url =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' +
