@@ -1,19 +1,6 @@
 // @ts-nocheck
 import fetch from 'node-fetch'
-import path from 'path'
-import { fileURLToPath } from 'url'
-import fs from 'fs'
-
-/* Use this in place of __dirname in an ES module */
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const staticFolder = path.join(__dirname, '../static')
-
-/* Function to read and return the content of a static HTML file */
-function getStaticFile(fileName) {
-  return fs.readFileSync(path.join(staticFolder, fileName)).toString()
-}
+import { getStaticFile } from './utils/staticFile.js'
 
 export default async ({ req, res, log, error }) => {
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY
