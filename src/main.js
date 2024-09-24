@@ -2,6 +2,9 @@
 import fetch from 'node-fetch'
 import { getStaticFile } from './utils/staticFile.js'
 
+// In-memory storage for conversation context
+let conversationContext = []
+
 export default async ({ req, res, log, error }) => {
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 
@@ -15,9 +18,15 @@ export default async ({ req, res, log, error }) => {
   /* Handle POST request */
   if (req.method === 'POST') {
     const body = req.body
+
+    // Add the new prompt to the conversation context
+    conversationContext.push(`User: ${body.prompt}`)
+    // Keep only the last 5 messages to save API cost
+    const context = conversationContext.slice(-5).join('\n')
+
     const prompt =
-      body.prompt +
-      `. Your output should be HTML. Do not include any heading or body tags. Just the content.
+      context +
+      `\nAI: Your output should be HTML. Do not include any heading or body tags. Just the content.
       Respond to greetings with a polite greeting.`
 
     const url =
@@ -48,6 +57,9 @@ export default async ({ req, res, log, error }) => {
       const generatedText =
         data.candidates?.[0]?.content?.parts?.[0]?.text ||
         'No response received'
+
+      // Add the response to the conversation context
+      conversationContext.push(`AI: ${generatedText}`)
 
       const result = {
         ok: true,
