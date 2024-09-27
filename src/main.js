@@ -61,19 +61,7 @@ export default async ({ req, res, log, error }) => {
       // Add the response to the conversation context
       conversationContext.push(`AI: ${generatedText}`)
 
-      const result = {
-        ok: true,
-        output: generatedText,
-        finishReason: data.candidates?.[0]?.finishReason || 'Unknown',
-        index: data.candidates?.[0]?.index || 0,
-        safetyRatings: data.candidates?.[0]?.safetyRatings || [],
-        usageMetadata: data.usageMetadata || {},
-      }
-
-      /* Return the result as JSON */
-      return res.json(result, 200, {
-        'Access-Control-Allow-Origin': '*',
-      })
+      return res.json({ ok: true, output: generatedText })
     } catch (err) {
       error('Error fetching response from Gemini API:', err)
       return res.json({ ok: false, error: err.message }, 500, {
